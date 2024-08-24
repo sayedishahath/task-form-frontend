@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import styles from './Home.module.css';
 import { useSelector,useDispatch } from "react-redux";
 import { startDeleteForm } from "../../actions/formActions";
+import { useState } from "react";
 export default function Home() {
+    const [loading,setLoading] = useState(false)
     const dispatch = useDispatch()
     const forms = useSelector((state=>{
         return state.form.data
@@ -21,7 +23,9 @@ export default function Home() {
   }
 
   const handleDelete = (id) => {
+    setLoading(true)
     dispatch(startDeleteForm(id))
+    setLoading(false)
     console.log('delete clicked')
   }
   return (
@@ -48,7 +52,7 @@ export default function Home() {
                      }} className={styles.actionBtnEd}>Edit</button>
                      <button onClick={()=>{
                         handleDelete(form._id)
-                     }} className={styles.actionBtnDe}>Delete</button>
+                     }} className={styles.actionBtnDe}>{loading?"Deleting...":"Delete"}</button>
                  </div>
              );
          })}

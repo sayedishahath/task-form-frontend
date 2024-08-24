@@ -11,7 +11,7 @@ export default function  Form (){
   const [inputs, setInputs] = useState([]);
   const [inputCount, setInputCount] = useState(0);
   const [inputOpen,setInputOpen] = useState(false)
-
+  const [loading,setLoding] = useState(false)
   const [errors, setErrors] = useState({}); 
 
 const validateInput = (input) => {
@@ -83,17 +83,19 @@ const handleDeleteInput = (order) => {
         setErrors(inputErrors);
         return;
       }
-
+      setLoding(true)
     try {
 
       dispatch(startCreateForm(formData))
       alert('Form saved successfully');
+      setLoding(false)
       navigate('/')
       setTitle('');
       setInputs([]);
       setInputCount(0);
     } catch (error) {
       console.error('Error saving form:', error);
+      setLoding(false)
       alert('Failed to save form');
     }
   };
@@ -174,7 +176,7 @@ const handleDeleteInput = (order) => {
       </div>
 
       <div className={styles.saveForm}>
-        <button className={styles.button} onClick={handleSaveForm}>Save Form</button>
+        <button className={styles.button} onClick={handleSaveForm}>{loading?"Saving...":"Save Form"}</button>
       </div>
     </div>
   );

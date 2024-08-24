@@ -15,7 +15,7 @@ export default function  EditForm (){
   const [inputCount, setInputCount] = useState(0);
   const [inputOpen,setInputOpen] = useState(false)
   const [errors, setErrors] = useState({}); 
-
+  const [loading,setLoding] = useState(false)
 const validateInput = (input) => {
 const errors = {};
 if (!input.label.trim()) {
@@ -97,17 +97,19 @@ const handleDeleteInput = (order) => {
         setErrors(inputErrors);
         return;
       }
-
+      setLoding(true)
     try {
 
       dispatch(startEditForm(formData,id))
       alert('changes saved successfully');
+      setLoding(false)
       navigate('/')
       setTitle('');
       setInputs([]);
       setInputCount(0);
     } catch (error) {
       console.error('Error saving changes:', error);
+      setLoding(false)
       alert('Failed to save changes');
     }
   };
@@ -190,7 +192,7 @@ const handleDeleteInput = (order) => {
           <div className={styles.saveForm}>
             <button className={styles.button} onClick={()=>{
                 handleSaveForm(id)
-            }}>Save Changes</button>
+            }}>{loading?"Saving...":"Save Changes"}</button>
           </div>
       
     </div>
