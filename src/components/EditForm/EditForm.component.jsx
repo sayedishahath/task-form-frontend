@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios'; // Import axios for making HTTP requests
-import styles from "./Form.module.css"
+import styles from "./EditForm.module.css"
 import { useDispatch } from 'react-redux';
-import { startCreateForm } from '../../actions/formActions';
+import { useParams } from 'react-router-dom';
+import { startEditForm} from '../../actions/formActions';
 import { useNavigate } from 'react-router-dom';
-export default function  Form (){
+import { GET_ONE_FORM } from '../../apis/formApi';
+export default function  EditForm (){
   const dispatch = useDispatch()
   const navigate= useNavigate()
+    const { id } = useParams();
   const [title, setTitle] = useState('');
   const [inputs, setInputs] = useState([]);
   const [inputCount, setInputCount] = useState(0);
   const [inputOpen,setInputOpen] = useState(false)
-
   const [errors, setErrors] = useState({}); 
 
 const validateInput = (input) => {
@@ -25,12 +27,23 @@ if (!input.placeholder.trim()) {
 return errors;
 };
 
-
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await axios.get(`${GET_ONE_FORM}${id}`);
+        const formData = response.data;
+        setTitle(formData.title);
+        setInputs(formData.inputs);
+        setInputCount(formData.inputs.length);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [id]);
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
 
- 
   const handleAddInput = (formType) => {
     if (inputCount < 20) {
       setInputs([
@@ -43,7 +56,6 @@ return errors;
     }
   };
 
- 
   const handleInputChange = (order, field, value) => {
     setInputs(
       inputs.map((input) =>
@@ -64,13 +76,15 @@ const handleDeleteInput = (order) => {
     setInputs(newInputs);
     setInputCount(inputCount - 1);
   };
-  const handleSaveForm = async () => {
+ 
+  const handleSaveForm = async (id) => {
     if (!title.trim()) {
       alert('Form title is required');
       return;
     }
 
     const formData = { title, inputs };
+
     const inputErrors = inputs.reduce((acc, input) => {
         const errors = validateInput(input);
         if (Object.keys(errors).length > 0) {
@@ -86,21 +100,21 @@ const handleDeleteInput = (order) => {
 
     try {
 
-      dispatch(startCreateForm(formData))
-      alert('Form saved successfully');
+      dispatch(startEditForm(formData,id))
+      alert('changes saved successfully');
       navigate('/')
       setTitle('');
       setInputs([]);
       setInputCount(0);
     } catch (error) {
-      console.error('Error saving form:', error);
-      alert('Failed to save form');
+      console.error('Error saving changes:', error);
+      alert('Failed to save changes');
     }
   };
 
   return (
     <div className= {styles.formCreateContainer}>
-      <h2>Create New Form</h2>
+      <h2>Edit Form</h2>
 
       <div className={styles.formTitle}>
         <label>Form Title:</label>
@@ -110,7 +124,6 @@ const handleDeleteInput = (order) => {
           onChange={handleTitleChange}
           placeholder="Enter form title"
         />
-        
       </div>
 
       {!inputOpen?<button className={styles.openButton} onClick={()=>{setInputOpen(true)}}>Add input</button>:
@@ -126,13 +139,13 @@ const handleDeleteInput = (order) => {
         </>}
       
      
-
       <div className= {styles.inputGrid}>
         {inputs.map((input) => (
+            <>
           <div key={input.order} className={styles.inputRow}>
             <div>{`${input.order + 1}. ${input.formType} `}Input</div>
             <div className={styles.inputColumn}>
-                <div>
+            <div>
               <input
                 type="text"
                 value={input.label}
@@ -142,14 +155,13 @@ const handleDeleteInput = (order) => {
                 placeholder="Input label"
                 readOnly={false}
               />
-              
-               {errors[input.order] && errors[input.order].label && (
-                <span className={styles.error}>
-                    {errors[input.order].label}
-                </span>
-                )}
-                </div>
-                <div>
+              {errors[input.order] && errors[input.order].label && (
+              <span className={styles.error}>
+                {errors[input.order].label}
+              </span>
+              )}
+              </div>
+              <div>
               <input
                 type="text"
                 value={input.placeholder}
@@ -159,23 +171,28 @@ const handleDeleteInput = (order) => {
                 placeholder="Input placeholder"
                 readOnly={false}
               />
-               {errors[input.order] && errors[input.order].placeholder && (
-                <span className={styles.error}>
-                    {errors[input.order].placeholder}
-                </span>
-                )}
-                </div>
+              {errors[input.order] && errors[input.order].placeholder && (
+              <span className={styles.error}>
+                {errors[input.order].placeholder}
+              </span>
+             )}
+             </div>
             </div>
             <div className={styles.inputColumn}>
               <button className={styles.button} onClick={() => handleDeleteInput(input.order)}>Delete</button>
             </div>
           </div>
+          
+        </>
         ))}
       </div>
 
-      <div className={styles.saveForm}>
-        <button className={styles.button} onClick={handleSaveForm}>Save Form</button>
-      </div>
+          <div className={styles.saveForm}>
+            <button className={styles.button} onClick={()=>{
+                handleSaveForm(id)
+            }}>Save Changes</button>
+          </div>
+      
     </div>
   );
 };

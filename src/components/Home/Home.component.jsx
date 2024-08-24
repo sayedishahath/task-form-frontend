@@ -16,6 +16,9 @@ export default function Home() {
   const handleNavigateToForm = (id) => {
     navigate(`/form/${id}`);
   }
+  const handleNavigateToEdit = (id)=>{
+    navigate(`/form/${id}/edit`)
+  }
 
   const handleDelete = (id) => {
     dispatch(startDeleteForm(id))
@@ -31,7 +34,7 @@ export default function Home() {
       <hr className={styles.hr} />
       <div  className={styles.formsContainer}>
         <h2 className={styles.title}>Forms</h2>
-        {forms?
+        {forms.length !=0?
          <div className={styles.tileContainer}>
          {forms?.map((form)=>{
              return (
@@ -40,7 +43,9 @@ export default function Home() {
                      <button onClick={()=>{
                         handleNavigateToForm(form._id)
                      }} className={styles.actionBtnVe}>View</button>
-                     <button className={styles.actionBtnEd}>Edit</button>
+                     <button onClick={()=>{
+                        handleNavigateToEdit(form._id)
+                     }} className={styles.actionBtnEd}>Edit</button>
                      <button onClick={()=>{
                         handleDelete(form._id)
                      }} className={styles.actionBtnDe}>Delete</button>

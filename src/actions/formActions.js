@@ -20,6 +20,25 @@ const createForm =(form)=>{
         payload:form
     }
 }
+export const startEditForm=(form,id)=>{
+    return async(dispatch)=>{
+        try{
+            const response = await axios.put(`${EDIT_FORM}${id}`,form,{
+            })
+            console.log(response.data)
+            dispatch(editForm(response.data))
+         
+        }catch(err){
+            console.log(err)
+        }
+    }
+}
+const editForm =(form)=>{
+    return{
+        type:'EDIT_FORM',
+        payload:form
+    }
+}
 export const startDeleteForm=(id)=>{
     return async(dispatch)=>{
         try{

@@ -20,6 +20,17 @@ export  function  formReducers  (state = initialState, action){
                 ...state,
                 data:state.data.filter(form=>form._id!==action.payload._id)
             }
+        case "EDIT_FORM":
+            return {
+                ...state,
+                data:state.data.map(form=>{
+                    if(form._id===action.payload._id){
+                        return {...form,...action.payload}
+                    }else{
+                        return {...form}
+                    }
+                })
+            }
         case "SET_SERVER_ERRORS":
             return {
                 ...state,
