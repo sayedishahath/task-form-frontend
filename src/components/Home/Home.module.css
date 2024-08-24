@@ -1,0 +1,146 @@
+.container {
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .description {
+    font-size: 18px;
+    color: #666;
+  }
+  
+  .button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #3e8e41;
+  }
+  
+  .hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+
+  .formsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    margin: 0 20px 20px 20px;
+  }
+
+  .formTitle {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px;
+  }
+  
+  .tileContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    
+  }
+  
+  .formTiles{
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .actionBtnVe {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .actionBtnVe:hover {
+    background-color: #3e8e41;
+  }
+  .actionBtnEd {
+    background-color: #01a7da;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .actionBtnEd:hover {
+    background-color: #2b8fc9;
+  }
+  .actionBtnDe {
+    background-color: #e23314;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .actionBtnDe:hover {
+    background-color: #8e3e3e;
+  }
+
+  @media only screen and (min-width: 1200px) {
+    .tileContainer {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+  }
+  
+  /* For medium screens (laptops) */
+  @media only screen and (min-width: 768px) and (max-width: 1199px) {
+    .tileContainer {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+  }
+  
+  /* For small screens (tablets) */
+  @media only screen and (min-width: 480px) and (max-width: 767px) {
+    .tileContainer {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+  
+  /* For extra small screens (mobiles) */
+  @media only screen and (max-width: 479px) {
+    .tileContainer {
+      grid-template-columns: repeat(1, 1fr);
+      gap: 5px;
+    }
+  }
